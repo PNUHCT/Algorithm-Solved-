@@ -9,9 +9,16 @@ public class template {
         // 콘솔 출력용 리터럴. system.out.println과 유사하므로 필요에 따라 바꿔가면서 사용.
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
+        // 테스트 케이스 수
+        int T = Integer.parseInt(br.readLine());
+
+        // for(int i=0; i<T ; i++) {
+
+        // }
+
+
         // String 형식의 입력값에서 엔터 기준으로 String값을 내보내주는 역할
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-
 
 
         //        bw.flush(); // stream을 flush 함. 프로세스를 닫지 않고 용량제어시 사용
