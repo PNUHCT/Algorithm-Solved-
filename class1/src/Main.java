@@ -12,14 +12,14 @@ public class Main {
         // 테스트 케이스 수
         int T = Integer.parseInt(br.readLine());
 
-        // for(int i=0; i<T ; i++) {
+        for(int i=0; i<T ; i++) {
 
-        // }
-
+        }
 
         // String 형식의 입력값에서 엔터 기준으로 String값을 내보내주는 역할
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
+//        bw.write(""+"\n");
 
         //        bw.flush(); // stream을 flush 함. 프로세스를 닫지 않고 용량제어시 사용
         bw.close();  // stream을 flush 하고, stream을 닫음
