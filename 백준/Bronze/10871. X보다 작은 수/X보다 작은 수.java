@@ -10,13 +10,14 @@ public class Main {
         int T = Integer.parseInt(st.nextToken());
         int X = Integer.parseInt(st.nextToken());
         String str = "";
-
+        
         StringTokenizer st2 = new StringTokenizer(br.readLine(), " ");
         for(int i=0; i<T; i++) {
             int A = Integer.parseInt(st2.nextToken());
             if(A<X) str += A + " ";   
         }
 
-        System.out.println(str);
+        bw.write(str);
+        bw.close();
     }
 }
