@@ -4,8 +4,10 @@ import java.util.*;
 public class no1920 {
 /* Set 사용 */
     public static void main(String[] args) throws IOException {
+        long beforeTime = System.currentTimeMillis(); //코드 실행 전에 시간 받아오기
+
+
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int N = Integer.parseInt(br.readLine());
         Set<String> setN = new HashSet<>();
@@ -18,12 +20,16 @@ public class no1920 {
         while(M-->0) {
             String str = st.nextToken();
             if(setN.contains(str)) {
-                bw.write("1"+"\n");
+                System.out.println(1);
             } else {
-                bw.write("0"+"\n");
+                System.out.println(0);
             }
         }
-        bw.close();
+
+        long afterTime = System.currentTimeMillis(); // 코드 실행 후에 시간 받아오기
+        long secDiffTime = (afterTime - beforeTime); //두 시간에 차 계산
+        System.out.println("시간차이(ms) : "+secDiffTime);
+
     }
 
 /* 시간초과 : ArrayList 사용 방식 */
