@@ -2,6 +2,7 @@ import java.io.*;
 import java.util.*;
 
 public class Main {
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -10,7 +11,8 @@ public class Main {
         for(int i=1; i<=T ; i++) dq.add(i);
 
         Integer num = Integer.valueOf(st.nextToken());
-        String result = "<";
+        StringBuilder sb = new StringBuilder();
+        sb.append("<");
 
         while(!dq.isEmpty()) {
             int count = 1;
@@ -18,10 +20,9 @@ public class Main {
                 dq.addLast(dq.pollFirst());
                 count++;
             }
-            result += dq.pollFirst();
-            if(!dq.isEmpty()) result += ", ";
+            sb.append(dq.pollFirst());
+            if(!dq.isEmpty()) sb.append(", ");
         }
-        System.out.println(result+">");
+        System.out.println(sb.append(">"));
     }
 }
-
