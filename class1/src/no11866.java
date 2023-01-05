@@ -11,7 +11,6 @@ public class no11866 {
         for(int i=1; i<=T ; i++) dq.add(i);
 
         Integer num = Integer.valueOf(st.nextToken());
-//        String result = "<";
         StringBuilder sb = new StringBuilder();
         sb.append("<");
 
@@ -22,10 +21,8 @@ public class no11866 {
                 count++;
             }
             sb.append(dq.pollFirst());
-//            result += dq.pollFirst();
             if(!dq.isEmpty()) sb.append(", ");
         }
-//        System.out.println(result+">");
         System.out.println(sb.append(">"));
     }
 }
