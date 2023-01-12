@@ -12,24 +12,23 @@ public class Main {
         int T = Integer.parseInt(br.readLine());
 
         for(int i=0; i<T ; i++) {
-            String line = br.readLine();
-            Deque<String> dq = new ArrayDeque<>();
-            String result="";
-            for(int j=0 ; j<line.length() ; j++) {
-                String str = String.valueOf(line.charAt(j));
-                if(str.equals("(")) dq.addLast(str);
-                else if (str.equals(")") && dq.isEmpty()) {
-                    result = "NO";
+            char arr[] = br.readLine().toCharArray();
+            Deque<Character> dq = new ArrayDeque<>();
+            boolean result= false;
+            for(int j=0 ; j<arr.length ; j++) {
+                if(arr[j]=='(') dq.addLast('(');
+                else if (arr[j]==')' && dq.isEmpty()) {
+                    result = true;
                     break;
                 }
-                else if (str.equals(")") && dq.peekLast().equals("(")) dq.pollLast();
-                else if (str.equals(")")) dq.addLast(str);
+                else if (arr[j]==')' && dq.peekLast()=='(') dq.pollLast();
+                else if (arr[j]==')') dq.addLast(')');
             }
-
             if(!dq.isEmpty()) bw.write("NO\n");
-            else if(result.equals("NO")) bw.write(result+"\n");
+            else if(result) bw.write("NO\n");
             else bw.write("YES\n");
         }
         bw.close();
     }
 }
+
