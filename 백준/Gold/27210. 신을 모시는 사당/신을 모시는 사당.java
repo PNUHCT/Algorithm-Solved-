@@ -34,7 +34,7 @@ public class Main {
         for (int i=A;i<N;i++) {
             count = (strArr[i].equals(goal)) ? count+1 : count-1;
             if(count<0) count=0;
-            if(count>max) max = count;
+            else if(count>max) max = count;
         }
         return max;
     }
