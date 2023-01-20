@@ -1,11 +1,6 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Deque;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -15,46 +10,39 @@ public class Main {
 
         while (true) {
             String str = br.readLine();
-            if (str.equals(".")) break;
-            String[] strArr = str.split("");
-            String result = "yes";
+            if(str.equals(".")) break;
 
-            List<String> list = Arrays.stream(strArr).filter(a -> a.equals("(") || a.equals("[") || a.equals(")") || a.equals("]")).collect(Collectors.toList());
             Deque<String> dq = new ArrayDeque<>();
 
-            for (String bal : list) {
-                if (bal.equals("(") || bal.equals("[")) dq.addLast(bal);
 
-                if (bal.equals(")")) {
+            String result = "yes";
+            for(int i=0 ; i<str.length() ; i++) {
+                if(str.charAt(i)=='(' || str.charAt(i)=='[') dq.addLast(String.valueOf(str.charAt(i)));
+                else if(str.charAt(i)==')') {
                     if (dq.isEmpty()) {
                         result = "no";
                         break;
                     }
-                    else if (dq.peekLast().equals("(")) {
-                        dq.pollLast();
-                    }
-                    else {
-                        result = "no";
-                        break;
+                    else if(dq.peekLast().equals("(")) dq.pollLast();
+                    else if (!dq.peekLast().equals("(")) {
+                            result = "no";
+                            break;
                     }
                 }
-
-                if (bal.equals("]")) {
+                else if(str.charAt(i)==']') {
                     if (dq.isEmpty()) {
                         result = "no";
                         break;
                     }
-                    else if (dq.peekLast().equals("[")) {
-                        dq.pollLast();
-                    }
-                    else {
+                    else if(dq.peekLast().equals("[")) dq.pollLast();
+                    else if (!dq.peekLast().equals("[")) {
                         result = "no";
                         break;
                     }
                 }
             }
             if(!dq.isEmpty()) result= "no";
-            sb.append(result + "\n");
+            sb.append(result+"\n");
         }
 
         System.out.println(sb);
