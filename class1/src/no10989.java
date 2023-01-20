@@ -1,26 +1,25 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class no10989 {
-    /**
-     * Arraylist를 이용한 Collections Sort
-     */
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
         int T = Integer.parseInt(br.readLine());
 
-        List<Integer> list = new ArrayList<>();
+        int[] arr = new int[T];
 
-        for(int i=0; i<T ; i++) list.add(Integer.parseInt(br.readLine()));
+        for(int i=0; i<T ; i++) arr[i] = Integer.parseInt(br.readLine());
 
-        Collections.sort(list);
-
-        for(Integer num : list) bw.write(""+num+"\n");
+        Arrays.stream(arr).sorted().forEach(a -> {
+            try {
+                bw.write(""+a+"\n");
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
 
         bw.close();
     }
