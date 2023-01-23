@@ -12,7 +12,7 @@ public class no18111 {
          * 2. 가장 많은 수 = maxVal
          * 3. 매트릭스를 순회하며, maxVal - a[i][j] 해서, 값이 음수면 removeWork += 해당 값   = 제거 해야함
          * 4. 매트릭스를 순회하며, maxVal - a[i][j] 해서, 값이 양수면 addWork += 해당 값   = 채워야 함
-         * 5. 만약 removeWork + addWork + B가 0보다 적으면, removeWork - 매트릭스 총 사이즈(한 층 더 낮게 치워야됨)
+         * 5. 만약 removeWork + addWork + B가 0보다 적으면, removeWork - 현재 max층의 블록개수
          * 6. removeTime = removeWork * 2초
          * 7. addTime = addWork * 1초
          * 8. workTime = removeTime + addTime;
@@ -24,16 +24,17 @@ public class no18111 {
         int B = Integer.parseInt(st.nextToken());
         int[][] rand = new int [N][M];
         Map<Integer, Integer> maxCheck = new HashMap<>();
+
         for(int i=0; i<N ; i++) {
             StringTokenizer stNum = new StringTokenizer(br.readLine(), " ");
             for(int j=0;j<M;j++) {
                 int block = Integer.parseInt(stNum.nextToken());
                 rand[i][j] = block;
-
                 if (maxCheck.containsKey(block)) maxCheck.put(block, maxCheck.get(block) + 1);
                 else maxCheck.put(block, 1);
             }
         }
+
         int maxVal = Collections.max(maxCheck.values());
         int max = getMaxValue(maxVal, maxCheck);
 
@@ -41,12 +42,13 @@ public class no18111 {
         int addBlock = 0;
         for(int i=0; i<N ; i++) {
             for(int j=0;j<M; j++) {
-                if ((rand[i][j]-max)<0) removeBlock += (max - rand[i][j]);
-                else addBlock += (max - rand[i][j]);
+                if ((rand[i][j]-max)<0) addBlock += (rand[i][j] - max);
+                else removeBlock += (rand[i][j] - max);
             }
         }
         if(removeBlock < addBlock - B) {
-            removeBlock -= max*maxVal;
+            removeBlock -= maxVal;
+            addBlock -= (N*M)-maxVal;
             max--;
         }
 
