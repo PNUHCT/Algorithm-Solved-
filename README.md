@@ -6,8 +6,8 @@ Alogorism (ver. Solved.ac)
 <br/>
 <br/>
 <div align="center">
-  <img align="left" width="500" height="280" src="https://github-readme-stats.vercel.app/api/top-langs/?username=PNUHCT&layout=Demo&theme=tokyonight"/>
-  <img align="left" width="200" src="http://mazassumnida.wtf/api/mini/generate_badge?boj=nyong9221"/>
+  <img align="left" width="400" height="280" src="https://github-readme-stats.vercel.app/api/top-langs/?username=PNUHCT&layout=Demo&theme=tokyonight"/>
+  <img align="left" width="150" src="http://mazassumnida.wtf/api/mini/generate_badge?boj=nyong9221"/>
   <br/>
   <br/>
   <img align="left" width="450" src="https://mazassumnida.wtf/api/v2/generate_badge?boj=nyong9221"/>
