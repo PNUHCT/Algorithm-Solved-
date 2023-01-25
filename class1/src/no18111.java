@@ -1,69 +1,76 @@
 import java.io.*;
-import java.util.*;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.StringTokenizer;
 
 public class no18111 {
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        /**
-         * 0. 0<i<N, 0<j<M으로 순회하여 매트릭스 생성
-         * 1. 매트릭스 내에서 같은 숫자가 가장 많은 수를 찾음 => HashMap을 이용한 count (밸류값이 갯수)
-         * 2. 가장 많은 수 = maxVal
-         * 3. 매트릭스를 순회하며, maxVal - a[i][j] 해서, 값이 음수면 removeWork += 해당 값   = 제거 해야함
-         * 4. 매트릭스를 순회하며, maxVal - a[i][j] 해서, 값이 양수면 addWork += 해당 값   = 채워야 함
-         * 5. 만약 removeWork + addWork + B가 0보다 적으면, removeWork - 현재 max층의 블록개수
-         * 6. removeTime = removeWork * 2초
-         * 7. addTime = addWork * 1초
-         * 8. workTime = removeTime + addTime;
-         */
-
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int N = Integer.parseInt(st.nextToken());
         int M = Integer.parseInt(st.nextToken());
         int B = Integer.parseInt(st.nextToken());
-        int[][] rand = new int [N][M];
-        Map<Integer, Integer> maxCheck = new HashMap<>();
 
+        /**
+         * 입력받은 대로 꼭 매트릭스일 필요가 없다.
+         * 어차피 모든 위치의 블록수를 계산하기 때문에 자료구조로 일렬로 나열해도 된다.
+         */
+        List<Integer> rand = new ArrayList<>();
         for(int i=0; i<N ; i++) {
-            StringTokenizer stNum = new StringTokenizer(br.readLine(), " ");
-            for(int j=0;j<M;j++) {
-                int block = Integer.parseInt(stNum.nextToken());
-                rand[i][j] = block;
-                if (maxCheck.containsKey(block)) maxCheck.put(block, maxCheck.get(block) + 1);
-                else maxCheck.put(block, 1);
+            StringTokenizer randSt = new StringTokenizer(br.readLine(), " ");
+            for(int j=0; j<M ; j++) {
+                rand.add(Integer.valueOf(randSt.nextToken()));
             }
         }
 
-        int maxVal = Collections.max(maxCheck.values());
-        int max = getMaxValue(maxVal, maxCheck);
+        /**
+         * 최대 높이를 구해서 한 층씩 내려갈 것임. 위에서부터 내려오는게 연산이 더 적다.
+         */
+        int floor = rand.stream().mapToInt(a->a).max().getAsInt();
 
-        int removeBlock = 0;
-        int addBlock = 0;
-        for(int i=0; i<N ; i++) {
-            for(int j=0;j<M; j++) {
-                if ((rand[i][j]-max)<0) addBlock += (rand[i][j] - max);
-                else removeBlock += (rand[i][j] - max);
+        /**
+         * 땅의 넓이 = N*M이며, N과 M은 최대 500이므로, 2500를 초과할 수 없다. 또한, 치우는 시간이 더 크므로, 최대 블록수*2를 초과할 수 없다
+         * 따라서, 500 * 500 * 2를 최대 시간으로 기준을 잡는다.
+         */
+        int time = 128000000;
+        /**
+         * while문 시작시 max에서 -1 되므로, 시작을 max에 +1 해주고 시작.
+         */
+        floor++;
+
+        while(floor-->=0) {
+            int inventory = B;
+            int removedBlock = 0;
+            int needs = 0;
+            for(int i=0; i<N*M ; i++) {
+                int block = rand.get(i);
+                if(block>floor) {
+                    inventory += block - floor;
+                    removedBlock += block - floor;
+                }
+                else needs += floor - block;
+            }
+
+            // 채워야 할 블록보다 가진 블록이 적을 경우 다음 층으로 내려감
+            if(inventory<needs) continue;
+
+            // 현재 층 작업시간 계산
+            int tempTime = (removedBlock * 2) + needs;
+
+            // 이전 시간이 현재 층보다 작업시간이 적은 경우, 한 층 빠진만큼 +1
+            if(time <= tempTime) {
+                floor++;
+                break;
+            } else {
+                // 현재 층의 작업시간이 더 적을 경우, 현재 작업 시간을 기준시간에 세팅 후 아래층으로 이동
+                time = tempTime;
             }
         }
-        if(removeBlock < addBlock - B) {
-            removeBlock -= maxVal;
-            addBlock -= (N*M)-maxVal;
-            max--;
-        }
 
-        System.out.println(Math.abs((removeBlock * 2) + (addBlock * 1))+ " " + max);
-    }
-
-    private static int getMaxValue(int maxVal, Map<Integer, Integer> maxCheck) {
-        List<Integer> keyList = new ArrayList<>();
-        for (Map.Entry<Integer, Integer> entry : maxCheck.entrySet()) {
-            if (entry.getValue().equals(maxVal)) {
-                keyList.add(entry.getKey());
-            }
-        }
-        Collections.sort(keyList, Collections.reverseOrder());
-        return keyList.get(0);
+        System.out.println(""+time+" "+floor);
     }
 }
 
