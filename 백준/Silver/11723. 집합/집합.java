@@ -1,16 +1,14 @@
 import java.io.*;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
-    static Set<String> set = new HashSet<>();
+    static List<String> list = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
-        
+
         int T = Integer.parseInt(br.readLine());
         for (int i = 0; i < T; i++) {
             StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -22,26 +20,26 @@ public class Main {
 
     private static String calculate(String cmd, String x, BufferedWriter bw) throws IOException {
         if (cmd.equals("add")) {
-            if (!set.contains(x)) set.add(x);
+            if (!list.contains(x)) list.add(x);
         } else if (cmd.equals("remove")) {
-            if (set.contains(x)) set.remove(x);
+            if (list.contains(x)) list.remove(x);
         } else if (cmd.equals("check")) {
-            if (set.contains(x)) bw.append("1\n");
+            if (list.contains(x)) bw.append("1\n");
             else bw.append("0\n");
         } else if (cmd.equals("toggle")) {
-            if (set.contains(x)) set.remove(x);
-            else set.add(x);
+            if (list.contains(x)) list.remove(x);
+            else list.add(x);
         }
         return null;
     }
 
-    private static String allOrEmpty(String cmd) throws IOException {
+    private static String allOrEmpty(String cmd) {
         if (cmd.equals("all")) {
-            Set<String> newSet = new HashSet<>();
-            for (int i = 1; i <= 20; i++) newSet.add(String.valueOf(i));
-            set = newSet;
+            List<String> newList = new ArrayList<>();
+            for (int i = 1; i <= 20; i++) newList.add(String.valueOf(i));
+            list = newList;
         } else if (cmd.equals("empty")) {
-            set.clear();
+            list.clear();
         }
         return null;
     }
