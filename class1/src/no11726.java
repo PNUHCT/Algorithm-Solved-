@@ -9,6 +9,12 @@ public class no11726 {
         System.out.println(tiling(T));
     }
 
+    /**
+     * 사실 겉보기엔 타일에 대한 조합을 구하는 것 같지만, 경우의 수를 나열해보면 피보나치 수열이다.
+     * 따라서, DP문제이다.
+     * @param num
+     * @return
+     */
     public static int tiling(int num) {
         if(num==1) return 1;
         int [] arr = new int[num];
