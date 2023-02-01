@@ -20,13 +20,13 @@ public class Main {
             nameMap.put(pokemon, cnt);
             count++;
         }
-        
+
         while(M-->0) {
             String pokemon = br.readLine();
-            if(numMap.containsKey(pokemon)) bw.write(numMap.get(pokemon)+"\n"); // 주어진게 숫자일 경우
-            else bw.write(nameMap.get(pokemon)+"\n");  // 주어진게 문자일 경우
+            String result = numMap.containsKey(pokemon) ? numMap.get(pokemon) : nameMap.get(pokemon);
+            bw.write(result+"\n");
         }
-        
+
         bw.close();
     }
 }
