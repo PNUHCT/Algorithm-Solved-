@@ -26,4 +26,3 @@ public class no11047 {
         System.out.println(count);
     }
 }
-
