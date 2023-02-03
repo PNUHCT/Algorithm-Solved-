@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.StringTokenizer;
 
 public class no11047 {
@@ -12,6 +10,7 @@ public class no11047 {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int N = Integer.parseInt(st.nextToken());
         int K = Integer.parseInt(st.nextToken());
+
         List<Integer> list = new ArrayList<>();
 
         for(int i=0; i<N ; i++) list.add(Integer.parseInt(br.readLine()));
