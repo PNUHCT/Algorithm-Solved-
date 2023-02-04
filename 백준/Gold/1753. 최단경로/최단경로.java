@@ -5,75 +5,66 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class Main {
-
-    static class Node{
-        int v;
-        int cost;
-
-        public Node(int v, int cost) {
-            this.v = v;
-            this.cost = cost;
+    private static class Node {
+        private int arrival;
+        private int distance;
+        public Node(int arrival, int distance) {
+            this.arrival = arrival;
+            this.distance = distance;
         }
     }
 
+    static final Integer INF = Integer.MAX_VALUE;
     static ArrayList<Node>[] graph;
     static boolean[] visit;
-    static int[] dist;
+    static int[] distance;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int v = Integer.parseInt(st.nextToken());
-        int e = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(br.readLine());
+        int V = Integer.parseInt(st.nextToken());
+        int E = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(br.readLine());
 
-        graph = new ArrayList[v + 1];
-        dist = new int[v + 1];
-        visit = new boolean[v + 1];
+        graph = new ArrayList[V+1];
+        visit = new boolean[V+1];
+        distance = new int [V+1];
 
-        for (int i = 1; i <= v; i++) {
-            graph[i] = new ArrayList<>();
-            dist[i] = Integer.MAX_VALUE;
+        for(int i = 1;i<= V;i++) graph[i] = new ArrayList<>();
+
+        for(int i=0 ; i<E ; i++) {
+            StringTokenizer stE = new StringTokenizer(br.readLine(), " ");
+            int departure = Integer.parseInt(stE.nextToken());
+            int arrival = Integer.parseInt(stE.nextToken());
+            int cost = Integer.parseInt(stE.nextToken());
+            graph[departure].add(new Node(arrival, cost));
         }
 
-        for (int i = 0; i < e; i++) {
-            st = new StringTokenizer(br.readLine());
-            int inputU = Integer.parseInt(st.nextToken());
-            int inputV = Integer.parseInt(st.nextToken());
-            int inputW = Integer.parseInt(st.nextToken());
+        dijkstra(V, start);
 
-            graph[inputU].add(new Node(inputV, inputW));
-        }
-
-        dijkstra(k);
-
-        for (int i = 1; i <= v; i++) {
-            System.out.println(dist[i] == Integer.MAX_VALUE ? "INF" : dist[i]);
+        for (int i = 1; i <= V; i++) {
+            System.out.println(distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]);
         }
     }
 
-    static void dijkstra(int start) {
-        //우선 순위 큐 사용, 가중치를 기준으로 오름차순한다.
-        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
-        q.add(new Node(start, 0));
-        dist[start] = 0;
+    private static void dijkstra (int V, int start) {
+        PriorityQueue<Node> queue = new PriorityQueue<>((a, b) -> a.distance - b.distance);
+        for(int i=1 ; i<V+1 ; i++) distance[i] = INF;
+        distance[start] = 0;
+        queue.add(new Node(start, 0));
 
-        while (!q.isEmpty()) {
-            Node now = q.poll();
+        while (!queue.isEmpty()) {
+            Node departure = queue.poll();
 
-            if (!visit[now.v]) {
-                visit[now.v] = true;
-            }
+            if(!visit[departure.arrival]) visit[departure.arrival] = true;
 
-            for (Node next : graph[now.v]) {
-
-                if (!visit[next.v] && dist[next.v] > now.cost + next.cost) {
-                    dist[next.v] = now.cost + next.cost;
-                    q.add(new Node(next.v, dist[next.v]));
+            for(Node arrival : graph[departure.arrival]) {
+                if(!visit[arrival.arrival] && distance[arrival.arrival] > departure.distance + arrival.distance ) {
+                    distance[arrival.arrival] = departure.distance + arrival.distance;
+                    queue.add(new Node(arrival.arrival, distance[arrival.arrival]));
                 }
             }
         }
     }
 }
-
