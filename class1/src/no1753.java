@@ -1,84 +1,69 @@
 import java.io.*;
-import java.math.BigInteger;
 import java.util.*;
 
 public class no1753 {
-    static class Node{
-        int v; //간선
-        int cost; //가중치
 
-        public Node(int v, int cost) {
-            this.v = v;
-            this.cost = cost;
+    private static class Node {
+        private int arrival;
+        private int distance;
+        public Node(int arrival, int distance) {
+            this.arrival = arrival;
+            this.distance = distance;
         }
     }
 
-    //각 노드에 연결되어 있는 노드에 대한 정보를 담는 리스트
+    static final Integer INF = Integer.MAX_VALUE;
     static ArrayList<Node>[] graph;
-    //방문한 적이 있는지 체크하는 목적의 리스트
     static boolean[] visit;
-    //최단 거리 테이블
-    static int[] dist;
+    static int[] distance;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int v = Integer.parseInt(st.nextToken());
-        int e = Integer.parseInt(st.nextToken());
-        int k = Integer.parseInt(br.readLine());
+        int V = Integer.parseInt(st.nextToken());
+        int E = Integer.parseInt(st.nextToken());
+        int start = Integer.parseInt(br.readLine());
 
-        graph = new ArrayList[v + 1];
-        dist = new int[v + 1];
-        visit = new boolean[v + 1];
+        graph = new ArrayList[V+1];
+        visit = new boolean[V+1];
+        distance = new int [V+1];
 
-        for (int i = 1; i <= v; i++) {
-            graph[i] = new ArrayList<>();
-            dist[i] = Integer.MAX_VALUE; //최대값으로 초기화, 최단거리를 찾기 위함.
+        for(int i = 1;i<= V;i++) graph[i] = new ArrayList<>();
+
+        for(int i=0 ; i<E ; i++) {
+            StringTokenizer stE = new StringTokenizer(br.readLine(), " ");
+            int departure = Integer.parseInt(stE.nextToken());
+            int arrival = Integer.parseInt(stE.nextToken());
+            int cost = Integer.parseInt(stE.nextToken());
+            graph[departure].add(new Node(arrival, cost));
+            graph[arrival].add(new Node(departure, cost));
         }
 
-        for (int i = 0; i < e; i++) {
-            // u -> v 로 가는 가중치 w가 주어진다.
-            st = new StringTokenizer(br.readLine());
-            int inputU = Integer.parseInt(st.nextToken());
-            int inputV = Integer.parseInt(st.nextToken());
-            int inputW = Integer.parseInt(st.nextToken());
+        dijkstra(V, start);
 
-            graph[inputU].add(new Node(inputV, inputW));
-        }
-
-        //다익스트라 알고리즘 수행
-        dijkstra(k);
-
-        for (int i = 1; i <= v; i++) {
-            System.out.println(dist[i] == Integer.MAX_VALUE ? "INF" : dist[i]);
+        for (int i = 1; i <= V; i++) {
+            System.out.println(distance[i] == Integer.MAX_VALUE ? "INF" : distance[i]);
         }
     }
 
-    static void dijkstra(int start) {
-        //우선 순위 큐 사용, 가중치를 기준으로 오름차순한다.
-        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.cost - o2.cost);
-        //시작 노드에 대해서 초기화
-        q.add(new Node(start, 0));
-        dist[start] = 0;
+    private static void dijkstra (int V, int start) {
+        PriorityQueue<Node> queue = new PriorityQueue<>((a, b) -> a.distance - b.distance);
+        for(int i=1 ; i<V+1 ; i++) distance[i] = INF;
+        distance[start] = 0;
+        queue.add(new Node(start, 0));
 
-        while (!q.isEmpty()) {
-            //현재 최단 거리가 가장 짧은 노드를 꺼내서 방문 처리 한다.
-            Node now = q.poll();
+        while (!queue.isEmpty()) {
+            Node departure = queue.poll();
 
-            if (!visit[now.v]) {
-                visit[now.v] = true;
-            }
+            if(!visit[departure.arrival]) visit[departure.arrival] = true;
 
-            for (Node next : graph[now.v]) {
-
-                //방문하지 않았고, 현재 노드를 거쳐서 다른 노드로 이동하는 거리가 더 짧을 경우
-                if (!visit[next.v] && dist[next.v] > now.cost + next.cost) {
-                    dist[next.v] = now.cost + next.cost;
-                    q.add(new Node(next.v, dist[next.v]));
+            for(Node arrival : graph[departure.arrival]) {
+                if(!visit[arrival.arrival] && distance[arrival.arrival] > departure.distance + arrival.distance ) {
+                    distance[arrival.arrival] = departure.distance + arrival.distance;
+                    queue.add(new Node(arrival.arrival, distance[arrival.arrival]));
                 }
             }
         }
     }
 }
-
