@@ -11,13 +11,14 @@ public class Main {
         int hear = Integer.parseInt(st.nextToken());
         int see = Integer.parseInt(st.nextToken());
         Set<String> notHear = new HashSet<>();
-        Set<String> notSee = new HashSet<>();
         List<String> notHearAndSee = new ArrayList<>();
 
         while(hear-->0) notHear.add(br.readLine());
-        while(see-->0) notSee.add(br.readLine());
+        while(see-->0) {
+            String notSee = br.readLine();
+            if(notHear.contains(notSee)) notHearAndSee.add(notSee);
+        };
 
-        for(String person : notHear) if(notSee.contains(person)) notHearAndSee.add(person);
         Collections.sort(notHearAndSee);
 
         bw.write(""+notHearAndSee.size()+"\n");
