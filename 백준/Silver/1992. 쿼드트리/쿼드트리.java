@@ -1,12 +1,9 @@
 import java.io.*;
-import java.math.BigInteger;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 
 public class Main {
 
     private static String[][] matrix;
-    private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    private static StringBuilder sb = new StringBuilder();
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -18,27 +15,27 @@ public class Main {
 
         QuadTree( 0, 0, N);
 
-        bw.close();
+        System.out.println(sb);
     }
 
 
     private static void QuadTree(int x, int y, int size) throws IOException {
         // 압축이 가능할 경우 하나의 색상으로 압축
         if(isPossible(x,y,size)) {
-            bw.append(matrix[x][y]);
+            sb.append(matrix[x][y]);
             return;
         }
 
         int newSize = size/2;
 
-        bw.append("("); // 각 depth에서 여는 괄호로 시작하는 부분
+        sb.append("("); // 각 depth에서 여는 괄호로 시작하는 부분
 
         QuadTree(x, y, newSize);  // 1 사분면
         QuadTree(x, y+newSize, newSize); // 2 사분면
         QuadTree(x+newSize, y, newSize);  // 3 사분면
         QuadTree(x+newSize, y+newSize, newSize);  // 4 사분면
 
-        bw.append(")"); // 각 depth에서 닫는 괄호로 끝나는 부분
+        sb.append(")"); // 각 depth에서 닫는 괄호로 끝나는 부분
     }
 
     private static boolean isPossible (int x, int y, int size) {
@@ -51,3 +48,4 @@ public class Main {
         return true; // 범위를 다 돌았는데 문제없으면 압축 가능을 반환
     }
 }
+
