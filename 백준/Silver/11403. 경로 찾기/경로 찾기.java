@@ -3,7 +3,7 @@ import java.util.StringTokenizer;
 
 public class Main {
     static int T;
-    static Integer[][] matrix;
+    static String[][] matrix;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -11,19 +11,16 @@ public class Main {
 
         // 맵 구성
         T = Integer.parseInt(br.readLine());
-        matrix= new Integer[T][T];
+        matrix= new String[T][T];
         for(int i=0; i<T ; i++) {
-            StringTokenizer st = new StringTokenizer(br.readLine(), " ");
-            for(int j=0; j<T ; j++) {
-                matrix[i][j] = Integer.parseInt(st.nextToken());
-            }
+            matrix[i] = br.readLine().split(" ");
         }
 
         for(int y=0; y<T ; y++) {
             for(int x=0; x<T ;x++) {
                 for (int z=0; z<T ; z++) {
-                    if(matrix[x][y].equals(1) && matrix[y][z].equals(1)) {
-                        matrix[x][z] = 1;
+                    if(matrix[x][y].equals("1") && matrix[y][z].equals("1")) {
+                        matrix[x][z] = "1";
                     }
                 }
             }
