@@ -4,20 +4,18 @@ import java.util.Deque;
 import java.util.StringTokenizer;
 
 public class no1074 {
+
+    /**
+     * 결과를 카운트 해줄 변수
+     */
     private static int count;
 
+    /**
+     * 입력, 실행 및 출력을 담당하는 main메소드
+     */
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
-        /**
-         * 분할정복
-         * 1. 주어진 길이를 2등분 하여 배열을 4등분한다
-         * 2. 주어진 정점이 1사분면에 있다면 다시 4분할
-         * 3. 주어진 정점이 2사분면에 있다면 1사분면을 count++ 해주고 다시 4분할
-         * 4. 주어진 정점이 3사분면에 있다면 1,2사분면을 count++ 해주고 다시 4분할
-         * 5. 주어진 정점이 4사분면에 있다면 1,2,3사분면을 count++ 해주고 다시 4분할
-         * 6. 길이가 1이 될 때까지 4분할 진행
-         */
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         int Length = (int) Math.pow(2, Integer.parseInt(st.nextToken()));
         int X = Integer.parseInt(st.nextToken());
@@ -28,17 +26,23 @@ public class no1074 {
         System.out.println(count);
     }
 
+    /**
+     * 실질적으로 값을 계산해주는 로직이 담긴 메소드
+     * @param X,Y : 주어진 최초의 지점의 위치
+     * @param Length : 주어진 최초의 이중배열의 길이
+     */
     private static void Quad(int X, int Y, int Length) {
         Deque<Node> dq = new ArrayDeque<>();
         dq.add(new Node(X,Y,Length));  // 첫번째 계산을 위함
 
+        // 1이 되기 전까지 대기열에 계산해줄 값이 Node 객체 형식으로 담길거임
         while(!dq.isEmpty()) {
             Node now = dq.poll();
             int nowX = now.X;
             int nowY = now.Y;
             int nowL = now.L;
 
-            // 1이면 마지막 지점이므로 멈춤
+            // 1이면 마지막 지점이므로 더이상 대기열에 넣지 않음
             if(nowL!=1) {
                 // 1 사분면
                 if (nowX < nowL/2 && nowY < nowL/2) {
