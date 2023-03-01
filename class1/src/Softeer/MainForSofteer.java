@@ -10,17 +10,16 @@ public class MainForSofteer {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
 
-        BigInteger bigint;
-
         int T = Integer.parseInt(br.readLine());
-
-        for(int i=0; i<T ; i++) {
-
-        }
-
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
 
         bw.close();
+    }
+
+    private static int solution (int input) {
+        int answer = 0;
+
+        return answer;
     }
 }
 
