@@ -1,8 +1,7 @@
 package Softeer;
 
 import java.io.*;
-import java.math.BigInteger;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class MainForSofteer {
 
