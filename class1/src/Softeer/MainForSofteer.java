@@ -15,11 +15,5 @@ public class MainForSofteer {
 
         bw.close();
     }
-
-    private static int solution (int input) {
-        int answer = 0;
-
-        return answer;
-    }
 }
 
