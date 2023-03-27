@@ -1,0 +1,34 @@
+-- FOOD_PRODUCT 테이블에서 -> SELECT
+-- 식품분류별로 가격이 제일 비싼 식품의 -> RANK = 1 
+-- 분류, 가격, 이름을 조회 -> SELECT 
+-- 이때 식품분류가 '과자', '국', '김치', '식용유'인 경우만 출력 -> WHERE
+-- 결과는 식품 가격을 기준으로 내림차순 정렬 -> ORDER BY
+
+# SELECT CATEGORY, PRICE AS MAX_PRICE, PRODUCT_NAME
+# FROM FOOD_PRODUCT FP
+# INNER JOIN (
+#     SELECT PRODUCT_ID, CATEGORY, RANK() OVER(ORDER BY PRICE DESC) AS FOOD_RANK
+#     FROM FOOD_PRODUCT
+#     GROUP BY CATEGORY
+#     ORDER BY CATEGORY
+# ) AS FPR ON FPR.PRODUCT_ID LIKE FP.PRODUCT_ID
+# WHERE 
+#     FPR.FOOD_RANK = 1 
+#     AND (
+#         FP.CATEGORY = "과자" 
+#         OR FP.CATEGORY = "국"
+#         OR FP.CATEGORY = "김치"
+#         OR FP.CATEGORY = "식용유"
+#     )
+# ORDER BY FP.PRICE
+
+SELECT CATEGORY, PRICE AS MAX_PRICE, PRODUCT_NAME
+FROM FOOD_PRODUCT
+WHERE 
+    PRICE IN (
+        SELECT MAX(PRICE) PRICE 
+        FROM FOOD_PRODUCT
+        GROUP BY CATEGORY
+    )
+    AND CATEGORY IN ("과자", "국", "김치", "식용유")
+ORDER BY PRICE DESC
