@@ -39,7 +39,6 @@ public class no17626 {
                 }
             }
         }
-
         return result;
     }
 }
