@@ -76,7 +76,6 @@ public class no1149 {
     static int[][] DP;
 
     public static void main(String[] args) throws IOException {
-
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
@@ -85,35 +84,23 @@ public class no1149 {
 
         StringTokenizer st;
         for(int i = 0; i < N; i++) {
-
             st = new StringTokenizer(br.readLine(), " ");
-
             map[i][R] = Integer.parseInt(st.nextToken());
             map[i][G] = Integer.parseInt(st.nextToken());
             map[i][B] = Integer.parseInt(st.nextToken());
         }
-
         DP[0][R] = map[0][R];
         DP[0][G] = map[0][G];
         DP[0][B] = map[0][B];
-
 
         System.out.println(Math.min(recur(N- 1, R), Math.min(recur(N - 1, G), recur(N - 1, B))));
     }
 
     static int recur(int N, int color) {
         if(DP[N][color] == 0) {
-
-            if(color == R) {
-                DP[N][R] = Math.min(recur(N - 1, G), recur(N - 1, B)) + map[N][R];
-            }
-            else if(color == G) {
-                DP[N][G] = Math.min(recur(N - 1, R), recur(N - 1, B)) + map[N][G];
-            }
-            else {
-                DP[N][B] = Math.min(recur(N - 1, R), recur(N - 1, G)) + map[N][B];
-            }
-
+            if(color == R) DP[N][R] = Math.min(recur(N - 1, G), recur(N - 1, B)) + map[N][R];
+            else if(color == G) DP[N][G] = Math.min(recur(N - 1, R), recur(N - 1, B)) + map[N][G];
+            else DP[N][B] = Math.min(recur(N - 1, R), recur(N - 1, G)) + map[N][B];
         }
         return DP[N][color];
     }
