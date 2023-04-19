@@ -12,6 +12,10 @@ public class no1149 {
      * https://www.acmicpc.net/problem/1149
      */
 
+
+    /**
+     * 재귀를 이용한 방법
+     */
 //    private static List<Integer> results = new ArrayList<>();
 //    private static int T;
 //    private static int[][] map;
@@ -69,6 +73,9 @@ public class no1149 {
 //        }
 //    }
 
+    /**
+     * DP를 이용한 방법
+     */
     final static int R = 0;
     final static int G = 1;
     final static int B = 2;
