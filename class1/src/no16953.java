@@ -1,49 +1,63 @@
 import java.io.*;
+import java.math.BigInteger;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.StringTokenizer;
 
 public class no16953 {
-    private static int A;
-    private static int B;
-    private static int min = -1;
-    // https://www.acmicpc.net/problem/16953
+    private static BigInteger A;
+    private static BigInteger B;
+    private static BigInteger min = BigInteger.valueOf(-1);
+
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
-        A=Integer.parseInt(st.nextToken());
-        B=Integer.parseInt(st.nextToken());
+        A=new BigInteger(st.nextToken());
+        B=new BigInteger(st.nextToken());
         BFS();
 
         System.out.println(min);
     }
 
+    /**
+     * Deque 대기열을 이용
+     * Node 객체에 변형된 숫자와 연산 수를 담아 순차적으로 처리한다.
+     * 이때, Deque에 두 가지 방식의 연산으로 각각 넣어주고 계산 시키는 방식이다.
+     * 만약 제일 먼저 목표 숫자에 도달한다면, 연산 횟수 Cnt는 순차적으로 증가해서 들어가는 대기열이므로, 최소값이 되는 원리이다.
+     *
+     * 단, BigInteger를 사용할 경우, 연산에 사용될 숫자 범위가 제한되지 않으나,
+     * 방문체크를 활용한 중복 연산을 방지하는 코드가 들어가질 못하고,
+     * BigInteger는 하나의 객체이므로. 타입 변환 과정에 필요한 메모리가 추가되어 메모리 소모가 있다.
+     */
     private static void BFS() {
         Deque<Node> dq = new ArrayDeque<>();
-        boolean[] visited = new boolean[1000000001];
-        dq.add(new Node(A, 0));
-        visited[A] = true;
+        dq.add(new Node(A, BigInteger.valueOf(1)));
 
         while(!dq.isEmpty()) {
             Node now = dq.poll();
-            if(now.Num==B) min = now.Cnt;
-            else if(!visited[now.Num]) {
-                dq.add(new Node(now.Num * 2, now.Cnt + 1));
-                visited[now.Num*2] = true;
+            if(now.Num.compareTo(B)==0) {
+                min = now.Cnt;
+                break;
+            }
+
+            if(now.Num.compareTo(B) == -1) {
+                dq.add(new Node(now.Num.multiply(BigInteger.valueOf(2)), now.Cnt.add(BigInteger.valueOf(1))));
 
                 String nowStr = now.Num + "1";
-                int now1 = Integer.parseInt(nowStr);
-                dq.add(new Node(now1, now.Cnt+1));
-                visited[now1] = true;
+                BigInteger now1 = new BigInteger(nowStr);
+                dq.add(new Node(now1, now.Cnt.add(BigInteger.valueOf(1))));
             }
         }
     }
 
+    /**
+     * BFS 대기열에 넣을 객체를 생성해주기 위한 이너클래스
+     */
     private static class Node {
-        private int Num;
-        private int Cnt;
+        private BigInteger Num;
+        private BigInteger Cnt;
 
-        public Node(int num, int cnt) {
+        public Node(BigInteger num, BigInteger cnt) {
             this.Num = num;
             this.Cnt = cnt;
         }
@@ -52,11 +66,6 @@ public class no16953 {
 
 
 // 챗 GPT 공식
-//import java.io.BufferedReader;
-//import java.io.InputStreamReader;
-//import java.io.IOException;
-//
-//public class no16953 {
 //    public static void main(String[] args) throws IOException {
 //        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 //        String[] input = br.readLine().split(" ");
