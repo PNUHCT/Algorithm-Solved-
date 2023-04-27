@@ -31,7 +31,8 @@ public class no15652 {
 
         for(int i = k; i<N ; i++) {
             subset[cnt] = nums[i];
-            Combination(cnt+1, i);
+            Combination(cnt+1, i);  // 중복을 허용하는 경우
+//            Combination(cnt + 1, i + 1); // 중복을 허용하지 않는 경우
         }
     }
 }
