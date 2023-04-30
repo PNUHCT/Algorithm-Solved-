@@ -1,0 +1,67 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.StringTokenizer;
+import java.util.stream.Collectors;
+
+public class no15667 {
+
+    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    private static int N;
+    private static int M;
+    private static List<Integer> nums = new ArrayList<>();
+    private static int[] subset;
+    private static boolean[] visited;
+    private static List<String> results = new ArrayList<>();
+
+    public static void main(String[] args) throws IOException {
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        subset = new int[M];
+        visited = new boolean[N];
+
+        StringTokenizer numbers = new StringTokenizer(br.readLine(), " ");
+        for (int i = 0; i < N; i++) nums.add(Integer.parseInt(numbers.nextToken()));
+//        nums = nums.stream().distinct().sorted().collect(Collectors.toList()); // 중복된 항목을 제거 후 수열을 구하는 방법
+        Collections.sort(nums);
+
+        Combination(0);
+
+        results = results.stream().distinct().collect(Collectors.toList());
+
+        for (int i = 0; i < results.size(); i++) bw.write(results.get(i) + "\n");
+
+        bw.close();
+    }
+
+    private static void Combination(int cnt) {
+        if (cnt == M) {
+            String str = "";
+            for (int i = 0; i < M; i++) str += subset[i] + " ";
+            results.add(str);
+            return;
+        }
+
+        for (int i = 0; i < N; i++) {
+            if(!visited[i]) {
+                subset[cnt] = nums.get(i);
+                visited[i] = true; // 방문 체크 후, 재귀를 돌리고
+                Combination(cnt + 1);
+                visited[i] = false; // 재귀가 끝나면 해당 부분은 다시 방문 해제 (여기가 포인트)
+            }
+        }
+    }
+}
+
+/**
+ * 1. 입력받은 수들을 ArrayList에 담고, 오름차순 정렬
+ * 2. Combination(재귀 메소드)를 이용해 0번째부터 카운트하며 재귀 시작
+ * 3. 뽑아야 하는 개수 M이 되기 전까지 재귀를 통한 반복문을 진행
+ * 4. 중복을 제거하기위해 방문 체크를 시행(visited) -> 방문 후 재귀를 시행
+ * 5. 방문한 곳에대한 재귀로 해당 경우의 수를 모두 구한 뒤, 다시 방문을 해제하여 다른 경우에서 방문할 수 있도록 허용해줌
+ * 6. 모든 경우의 수를 구한 뒤, 같은 경우에 대해 중복 제거 실행
+ * 7. 최종적으로 구해진 모든 경우의 수를 출력
+ */
