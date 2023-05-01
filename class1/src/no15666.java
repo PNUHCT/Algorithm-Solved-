@@ -5,6 +5,14 @@ import java.util.List;
 import java.util.StringTokenizer;
 import java.util.stream.Collectors;
 
+/**
+ * N개의 자연수와 자연수 M이 주어졌을 때, 아래 조건을 만족하는 길이가 M인 수열을 모두 구하는 프로그램을 작성하시오.
+ *
+ * N개의 자연수 중에서 M개를 고른 수열
+ * 같은 수를 여러 번 골라도 됨 = 중복허용
+ * 고른 수열은 비내림차순 = 선택된 수열은 오름차순인 경우만 허용
+ */
+
 public class no15666 {
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
@@ -62,3 +70,48 @@ public class no15666 {
         }
     }
 }
+
+
+/**
+ * Chat GPT 코드 (DFS)
+ */
+//import java.util.*;
+//
+//public class no15666 {
+//    static int[] numbers;
+//    static int n, m;
+//    static Set<String> answer = new HashSet<>();
+//
+//    public static void main(String[] args) {
+//        Scanner scanner = new Scanner(System.in);
+//        n = scanner.nextInt();
+//        m = scanner.nextInt();
+//        numbers = new int[n];
+//        for (int i = 0; i < n; i++) {
+//            numbers[i] = scanner.nextInt();
+//        }
+//        Arrays.sort(numbers);
+//        dfs(new ArrayList<>(), 0);
+//        List<String> output = new ArrayList<>(answer);
+//        Collections.sort(output);
+//        for (String s : output) {
+//            System.out.println(s);
+//        }
+//    }
+//
+//    static void dfs(List<Integer> seq, int prev) {
+//        if (seq.size() == m) {
+//            StringBuilder sb = new StringBuilder();
+//            for (int num : seq) {
+//                sb.append(num).append(" ");
+//            }
+//            answer.add(sb.toString().trim());
+//            return;
+//        }
+//        for (int i = prev; i < n; i++) {
+//            List<Integer> newSeq = new ArrayList<>(seq);
+//            newSeq.add(numbers[i]);
+//            dfs(newSeq, i);
+//        }
+//    }
+//}
