@@ -3,8 +3,10 @@ import java.util.*;
 
 public class no1504 {
 
+// 집에가서 1부터 N으로 가는 루트 탐색하기 수정하기
+
     /**
-     * 문제 : 임의의 경로에서 주어진 두 정점을 지나는 경로 중 최단거리를 구하기
+     * 문제 : 1번에서 N번으로 가능 경로 중 주어진 두 정점을 지나는 경로 중 최단거리를 구하기
      * 조건1 : 한번 지났던 경로를 재방문 가능(중복 node, 중복 edge)
      * 조건2 : '출발지점, 도착지점, 사이의 거리'가 순차적으로 주어짐
      */
@@ -37,7 +39,7 @@ public class no1504 {
         goal[0] = Integer.parseInt(goals.nextToken());
         goal[1] = Integer.parseInt(goals.nextToken());
 
-        // 탐색
+        // 임의의 출발점에서 시작할 수 있는 경우 탐색
         for (int i=0; i<N ; i++) {
             BFS(i);
         }
