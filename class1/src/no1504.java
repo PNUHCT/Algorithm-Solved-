@@ -62,18 +62,16 @@ public class no1504 {
             // 만약 현재 마일리지가 min보다 크면 continue; (사실상 최초 min에서 이미 반복이 끝나므로 필요 없는 예외)
 
             // 만약 도착하면 min 저장 후 break;
-            if(visited[goal[0]] && visited[goal[1]] && now==N) {
-                // if(min <= nowDis) min = nowDis; // 최초의 출발점을 임의의 출발점에서 시작할 수 있는 경우 사용
-                min = nowDis;
-                break;
+            if(now==N) {
+                if(visited[goal[0]] && visited[goal[1]]) {
+                    // if(min <= nowDis) min = nowDis; // 최초의 출발점을 임의의 출발점에서 시작할 수 있는 경우 사용
+                    min = nowDis;
+                    break;
+                }
+                continue;
             }
 
-            // for(int i=0 ; i<visited.length ; i++) {
-            //     if(!visited[i]) break;
-            //     if(i==visited.length) return; // N까지 못가는 경우 에외처리
-            // }
-
-            
+            // 1에서 N으로 가는 경로가 없을 경우 반복 멈추는 조건 설정하기
 
             // 출발지점에서 경로가 있는 부분을 모두 탐색
             for(int i=0 ; i<N ; i++) {
