@@ -2,12 +2,10 @@ import java.io.*;
 import java.util.*;
 
 public class no1504 {
-    private static int N;
-    private static int M;
+    private static int N, M;
     private static int[][] map; // 각 거리를 저장할 매트릭스. 0이면 간선이 없는 것.(= 이동불가)
-    private static int min = -1;
-    private static int sum = 0;
-    // private static boolean[] visited;
+    private static boolean[] visited;
+    private static int INF = 200000 * 1000; // 최대 간선의 수 * 최대 가중치 : 즉, 최대 누적 가중치는 200000000을 넘을 수 없다.
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -28,55 +26,72 @@ public class no1504 {
 
         // 지나야 하는 두 정점
         StringTokenizer goals = new StringTokenizer(br.readLine(), " ");
-        
         int A = Integer.parseInt(goals.nextToken());
         int B = Integer.parseInt(goals.nextToken());
-
-        int fst = BFS(1, A);
-        int scd = fst != 0 ? BFS(A, B) : 0;
-        int last = scd != 0 ? BFS(B, N) : 0;
-
-        if(last!=0) min = sum;
         
-        System.out.println(min);
+        /**
+         * 아래 두 가지 경우의 수 중, 더 짧은 누적거리를 출력.
+         * 만약 최소 누적거리가 INF보다 크거나 같다면, 경로가 없음을 나타냄.
+         * 
+         * 1 -> A -> B -> N
+         * 1 -> B -> A -> N
+         * 
+         * 이때, 각 구간당 방문체크 후, 다음 구간을 탐색할 때는 방문체크가 초기화 되므로 중복 방문이 허용된다
+         */
+
+        int first1 = Dijkstra(1, A);
+        int first2 = Dijkstra(A, B);
+        int first3 = Dijkstra(B, N);
+        int first = first1 + first2 + first3;
+
+        int second1 = Dijkstra(1, B);
+        int second2 = Dijkstra(B, A);
+        int second3 = Dijkstra(A, N);
+        int second = second1 + second2 + second3;
+
+        // int min = first <= second ? first : second;
+        // int answer = min <= INF ? min : -1;
+
+        // System.out.println(answer);
+
+        if(first1 >= INF || first2>= INF || first3 >= INF || second1 >= INF || second2 >= INF || second3 >= INF) System.out.println(-1);
+        else if (first<= second) System.out.println(first);
+        else System.out.println(second);
     }
-    
-    private static int BFS(int start, int goal) {
-        Deque<Node> dq = new ArrayDeque<>();
-        dq.add(new Node(start, 0));
-        boolean[] visited = new boolean[N+1];
-        int result = 0;
 
-        while(!dq.isEmpty()) {
-            Node node = dq.poll();
-            int now = node.Departure;
-            int nowDis = node.Distance;
-
-            // 만약 도착하면 min 저장 후 break;
-            if(now==goal) {
-                sum += nowDis;
-                result = now;
+    private static int Dijkstra (int start, int end) {
+        PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> a.Dist - b.Dist);
+        pq.add(new Node(start, 0));
+        visited = new boolean[N+1];
+        visited[start] = true;
+        int result = INF;
+        
+        while(!pq.isEmpty()) {
+            Node node = pq.poll();
+            int now = node.Next;
+            
+            if(now==end) {
+                result = node.Dist;
                 break;
             }
 
-            // 출발지점에서 경로가 있는 부분을 모두 탐색
-            for(int i=0 ; i<N ; i++) {
+            for(int i=1 ; i<N+1 ; i++) {
                 if(map[now][i]!=0 && !visited[i]) {
-                    dq.add(new Node(i, nowDis + map[now][i])); // 현재 도착지점을 다음 출발지점으로, 현재 이동거리 + 다음 출발지점까지의 이동거리
                     visited[i] = true;
-                } 
+                    pq.add(new Node(i, node.Dist+map[now][i]));
+                }
             }
         }
         return result;
     }
 
     private static class Node {
-        private int Departure; // 출발지점 == 직전 도착지점
-        private int Distance; // 누적거리
-
-        public Node (int departure, int distance) {
-            this.Departure = departure;
-            this.Distance = distance;
+        private int Next;
+        private int Dist;
+        
+        public Node (int next, int dist) {
+            this.Next = next;
+            this.Dist = dist;
         }
     }
 }
