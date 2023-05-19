@@ -2,20 +2,12 @@ import java.io.*;
 import java.util.*;
 
 public class no1504 {
-
-// 집에가서 1부터 N으로 가는 루트 탐색하기 수정하기
-
-    /**
-     * 문제 : 1번에서 N번으로 가능 경로 중 주어진 두 정점을 지나는 경로 중 최단거리를 구하기
-     * 조건1 : 한번 지났던 경로를 재방문 가능(중복 node, 중복 edge)
-     * 조건2 : '출발지점, 도착지점, 사이의 거리'가 순차적으로 주어짐
-     */
     private static int N;
     private static int M;
     private static int[][] map; // 각 거리를 저장할 매트릭스. 0이면 간선이 없는 것.(= 이동불가)
     private static int min = -1;
-    private static int[] goal = new int[2];
-    private static boolean[] visited;
+    private static int sum = 0;
+    // private static boolean[] visited;
 
     public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -36,51 +28,46 @@ public class no1504 {
 
         // 지나야 하는 두 정점
         StringTokenizer goals = new StringTokenizer(br.readLine(), " ");
-        goal[0] = Integer.parseInt(goals.nextToken());
-        goal[1] = Integer.parseInt(goals.nextToken());
+        
+        int A = Integer.parseInt(goals.nextToken());
+        int B = Integer.parseInt(goals.nextToken());
 
-        // 임의의 출발점에서 시작할 수 있는 경우 탐색
-        // for (int i=0; i<N ; i++) {
-        //     BFS(i);
-        // }
+        int fst = BFS(1, A);
+        int scd = fst != 0 ? BFS(A, B) : 0;
+        int last = scd != 0 ? BFS(B, N) : 0;
 
-        BFS();
+        if(last!=0) min = sum;
         
         System.out.println(min);
     }
     
-    private static void BFS() {
+    private static int BFS(int start, int goal) {
         Deque<Node> dq = new ArrayDeque<>();
-        dq.add(new Node(1, 0));
-        visited = new boolean[N+1];
+        dq.add(new Node(start, 0));
+        boolean[] visited = new boolean[N+1];
+        int result = 0;
 
         while(!dq.isEmpty()) {
             Node node = dq.poll();
             int now = node.Departure;
             int nowDis = node.Distance;
-            
-            // 만약 현재 마일리지가 min보다 크면 continue; (사실상 최초 min에서 이미 반복이 끝나므로 필요 없는 예외)
 
             // 만약 도착하면 min 저장 후 break;
-            if(now==N) {
-                if(visited[goal[0]] && visited[goal[1]]) {
-                    // if(min <= nowDis) min = nowDis; // 최초의 출발점을 임의의 출발점에서 시작할 수 있는 경우 사용
-                    min = nowDis;
-                    break;
-                }
-                continue;
+            if(now==goal) {
+                sum += nowDis;
+                result = now;
+                break;
             }
-
-            // 1에서 N으로 가는 경로가 없을 경우 반복 멈추는 조건 설정하기
 
             // 출발지점에서 경로가 있는 부분을 모두 탐색
             for(int i=0 ; i<N ; i++) {
-                if(map[now][i]!=0) {
+                if(map[now][i]!=0 && !visited[i]) {
                     dq.add(new Node(i, nowDis + map[now][i])); // 현재 도착지점을 다음 출발지점으로, 현재 이동거리 + 다음 출발지점까지의 이동거리
                     visited[i] = true;
                 } 
             }
         }
+        return result;
     }
 
     private static class Node {
