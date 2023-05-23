@@ -15,17 +15,6 @@ public class no11943 {
         apple2 = Integer.parseInt(st2.nextToken());
         orange2 = Integer.parseInt(st2.nextToken());
 
-        int answer = 0;
-
-        if(apple1>=apple2) {
-            if(orange2<apple2) answer += apple1 + orange2;
-            else answer += apple2 + orange1;
-        }
-        else {
-            if(orange1<apple1) answer += apple2 + orange1;
-            else answer += apple1 + orange2;
-        }
-
-        System.out.println(answer);
+        System.out.println(Math.min(apple1 + orange2, apple2 + orange1));
     }
 }
