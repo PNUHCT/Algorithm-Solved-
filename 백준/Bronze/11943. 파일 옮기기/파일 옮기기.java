@@ -1,9 +1,20 @@
-import java.util.Scanner;
+import java.io.*;
+import java.util.StringTokenizer;
+
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc =new Scanner(System.in);
-        int a = sc.nextInt(), b = sc.nextInt();
-        int c = sc.nextInt(), d = sc.nextInt();
-        System.out.println(Math.min(a + d, b + c));
+    private static int apple1, apple2, orange1, orange2;
+
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
+        StringTokenizer st1 = new StringTokenizer(br.readLine(), " ");
+        apple1 = Integer.parseInt(st1.nextToken());
+        orange1 = Integer.parseInt(st1.nextToken());
+
+        StringTokenizer st2 = new StringTokenizer(br.readLine(), " ");
+        apple2 = Integer.parseInt(st2.nextToken());
+        orange2 = Integer.parseInt(st2.nextToken());
+
+        System.out.println(Math.min(apple1 + orange2, apple2 + orange1));
     }
 }
