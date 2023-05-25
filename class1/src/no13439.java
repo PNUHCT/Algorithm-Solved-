@@ -25,7 +25,7 @@ public class no13439 {
              * 2. +1을 수행, sec++  => 반복
              * 3. *2를 수행         => 반복
              */
-            if(sb==0) sb++;
+            if(sb==0) sb++; // 8% 에서 실패하는 경우, 수빈이의 첫 위치가 0일 때를 산정하기
             System.out.println(calcul(sb, goal));
         }
     }    
@@ -39,19 +39,17 @@ public class no13439 {
             Subin subin = dq.poll();
 
             if(subin.Now == goal && result>=subin.Sec) result = subin.Sec;
+            // if(subin.Now == goal) {
+            //     result = subin.Sec;
+            //     break;
+            // }
             
             if(subin.Now>0 && subin.Now <=100000 && !visited[subin.Now]) {
                 visited[subin.Now] = true;
-                for (int i=0 ; i<3 ; i++) {
-                    if(i==0) {
-                        dq.add(new Subin(subin.Now-1, subin.Sec+1));
-                    } else if (i == 1) {     
-                        dq.add(new Subin(subin.Now+1, subin.Sec+1));
-                    } else {
-                        dq.add(new Subin(subin.Now*2, subin.Sec));
-                    }
+                dq.add(new Subin(subin.Now-1, subin.Sec+1));
+                dq.add(new Subin(subin.Now+1, subin.Sec+1));
+                dq.add(new Subin(subin.Now*2, subin.Sec));
                 }
-            }
         }
         return result;
     }
