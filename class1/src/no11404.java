@@ -6,6 +6,8 @@ public class no11404 {
     private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static int city, bus;
     private static int[][] map;
+    private static boolean[] visited;
+
     /**
      * 
      */
@@ -28,5 +30,16 @@ public class no11404 {
          * DFS 사용?
          */
 
+        for(int i = 0 ; i<city ; i++) {
+
+            DFS(i);
+        }
+
+    }
+
+    private static int DFS(int index) {
+
+
+        return 0;
     }
 }
