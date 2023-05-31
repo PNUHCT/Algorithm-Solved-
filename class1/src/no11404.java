@@ -5,8 +5,8 @@ public class no11404 {
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static int city, bus;
-    private static int[][] map;
-    private static boolean[] visited;
+    private static Integer[][] map;
+    private static boolean[][] visited;
 
     /**
      * 
@@ -14,13 +14,11 @@ public class no11404 {
     public static void main(String[] args) throws IOException {
         city = Integer.parseInt(br.readLine());
         bus = Integer.parseInt(br.readLine());
-        map = new int[bus][3];
+        map = new Integer[city+1][city+1];
 
         for (int i=0 ; i<bus ; i++) {
             StringTokenizer busSt = new StringTokenizer(br.readLine(), " ");
-            map[i][0] = Integer.parseInt(busSt.nextToken());
-            map[i][1] = Integer.parseInt(busSt.nextToken());
-            map[i][2] = Integer.parseInt(busSt.nextToken());
+            map[Integer.parseInt(busSt.nextToken())][Integer.parseInt(busSt.nextToken())] = Integer.parseInt(busSt.nextToken());
         }
         
         /**
@@ -30,16 +28,28 @@ public class no11404 {
          * DFS 사용?
          */
 
+        visited = new boolean[city][city];
+
         for(int i = 0 ; i<city ; i++) {
-
-            DFS(i);
+            for(int j = 0 ; j<city ; j++) {
+//                if(!visited[i][j]) {
+                    bw.write(""+DFS(i, j, 0)+" ");
+//                }
+            }
+            bw.write("\n");
         }
-
+        bw.close();
     }
 
-    private static int DFS(int index) {
+    private static int DFS(int departure, int goal, int sum) {
+        if(departure==goal) return sum;
 
-
-        return 0;
+        for(int j = 0 ; j<city ; j++) {
+            if(!visited[departure][goal] && map[departure][j]!=null) {
+                visited[departure][goal] = true;
+                return DFS(j, goal, sum + map[departure][j]);
+            }
+        }
+        return sum;
     }
 }
