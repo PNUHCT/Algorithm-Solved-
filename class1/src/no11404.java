@@ -42,7 +42,7 @@ public class no11404 {
     }
 
     private static int BFS(int start, int goal) {
-        PriorityQueue<Node> pq = new PriorityQueue<>( (a, b) -> b.Sum - a.Sum);
+        PriorityQueue<Node> pq = new PriorityQueue<>( (a, b) -> a.Sum - b.Sum);
         pq.add(new Node(start, 0));
         visited[start][start] = true;
         int min = 0;
@@ -51,7 +51,7 @@ public class no11404 {
             Node now = pq.poll();
             
             if(now.Arrival==goal) {
-                min = now.Arrival;
+                min = now.Sum;
                 break;
             }
             
