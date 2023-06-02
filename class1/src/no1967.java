@@ -1,72 +1,63 @@
 import java.util.*;
 import java.io.*;
 
-/**
- * 트리의 지름 = 두 노드 사이의 거리가 가장 긴 경로를 구하는 것
- * 즉, Node A -> Node B 의 이동에 따른 비용이 다 다르므로,
- * 모든 노드를 대상으로, 둘 사이가 이동이 가능할 때, 최대 비용 경로를 구하는 것
- */
-
 public class no1967 {
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static int N, max; // 노드의 개수
-    private static Integer[][] map; // Null 인경우를 경로가 없는 것으로 처리하기 위함
-    private static boolean[][] visited;
+    private static List<Node> map[];
+    private static boolean[] visited;
 
     
     public static void main (String[] args) throws IOException {
          N = Integer.parseInt(br.readLine());
-         map = new Integer[N+1][N+1];
          max = Integer.MIN_VALUE;
+
+         map = new ArrayList[N+1];
+         for(int i = 1 ; i<=N ; i++ ) map[i] = new ArrayList<>(); // 주어지는 A->B 노드 이동당 비용을 저장할 것임
 
          for(int i=1 ; i<N; i++) {  // 조건이 N-1만큼의 간선(Edge)가 주어짐
             StringTokenizer st = new StringTokenizer(br.readLine(), " ");
             int A = Integer.parseInt(st.nextToken());
             int B = Integer.parseInt(st.nextToken());
-            map[A][B] = map[B][A] = Integer.parseInt(st.nextToken()); // 트리의 경우 방향이 없으므로 양방향 모두 같은 비용으로 저장
+            int cost = Integer.parseInt(st.nextToken());
+
+            // 방향이 없는 트리이므로, 양방향 같은 비용으로 저장
+            map[A].add(new Node(B, cost));
+            map[B].add(new Node(A, cost));
          }
 
-         for( int departue = 1 ; departue<=N ; departue++ ) {
-            for( int arrival = 1 ; arrival<=N ; arrival++ ) {
-                visited = new boolean[N+1][N+1];
-                BFS(departue, arrival);
-            }
+        /**
+         * 각 Node를 순차적으로 DFS 탐색
+         * DFS에서 모든 경우를 탐색하되, 최대값이 되는 경우를 max에 저장
+         */
+
+         for(int start = 1 ; start<=N ; start++) {
+            visited = new boolean[N+1];
+            visited[start] = true;
+            DFS(start, 0);
          }
+
          System.out.println(max);
     }
 
-    private static void BFS(int start, int goal) {
-        int result = Integer.MIN_VALUE;
-        PriorityQueue<Node> pq = new PriorityQueue<>((a, b) -> b.Sum - a.Sum); // 최대 합계를 구해야 하므로, 내림차순 정렬
-        pq.add(new Node(start, 0));
-        visited[start][start] = true;
-
-        while(!pq.isEmpty()) {
-            Node now = pq.poll();
-
-            if(now.Now == goal) {
-                result = now.Sum;
-                break;
+    private static void DFS(int departue, int sum) {
+        // 더이상 갈 곳이 없을때까지(visited[]내 모든 노드를 방문한 경우) 재귀 진행
+        for(Node next : map[departue]) { // 직전에 출발한 곳으로부터 이동할 수 있는 모든 경로를 탐색
+            if(!visited[next.Num]) { // 방문한 적이 없는 경우에 한해서 (빙빙 도는거 방지)
+                visited[next.Num] = true; // 방문체크 후,
+                DFS(next.Num, sum + next.Cost);  // 이동, 직전까지 합산 + 새로운 이동을 위한 비용 추가
             }
-
-            for(int next=1 ; next<=N ; next++) {
-                if(!visited[now.Now][next] && map[now.Now][next]!=null) {
-                    visited[now.Now][next] = true;
-                    pq.add(new Node(next, now.Sum + map[now.Now][next]));
-                }
-            } 
         }
 
-        if(result>=max) max = result;
+        max = (max < sum) ? sum : max; // 마지막으로 저장한 최대값과 현재 합산을 비교해서 더 큰값을 저장
     }
 
     private static class Node {
-        private int Now;
-        private int Sum;
+        private int Num, Cost;
 
-        public Node (int now, int sum) {
-            this.Now = now;
-            this.Sum = sum;
+        public Node(int num, int cost) {
+            this.Num = num;
+            this.Cost = cost;
         }
     }
 }
