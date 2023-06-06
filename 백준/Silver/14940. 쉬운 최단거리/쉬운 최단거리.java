@@ -1,80 +1,88 @@
-import java.util.*;
 import java.io.*;
+import java.math.BigInteger;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.StringTokenizer;
 
 public class Main {
-    private final static int[] DX = { 1, 0, -1, 0 };
-    private final static int[] DY = { 0, -1, 0, 1 };
-    private static int[][] map, distance;
-    private static int m, n;
-    private static boolean[][] isVisited;
-    
+    private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+    private static int N, M, baseY, baseX;
+    private static String[][] map;
+    private static int[][] distance;
+    private static boolean[][] visit;
+    private static int[] ver = {-1, 1, 0, 0};
+    private static int[] hor = {0, 0, -1, 1};
+
     public static void main(String[] args) throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        StringBuilder builder = new StringBuilder();
-        boolean isStartChecked = false;
-        String[] size = reader.readLine().split(" ");
-        n = Integer.parseInt(size[0]);
-        m = Integer.parseInt(size[1]);
-        int startX = -1, startY = -1;
-        
-        map = new int[n][m];
-        distance = new int[n][m];
-        isVisited = new boolean[n][m];
-        
-        for (int i = 0; i < n; i++) {
-            map[i] = Arrays.stream(reader.readLine().split(" ")).mapToInt(Integer::parseInt).toArray();
-            if (!isStartChecked) 
-                for (int j = 0; j < m; j++) 
-                    if (map[i][j] == 2) {
-                        isStartChecked = true;
-                        startX = i;
-                        startY = j;
+        StringTokenizer st = new StringTokenizer(br.readLine(), " ");
+        N = Integer.parseInt(st.nextToken());
+        M = Integer.parseInt(st.nextToken());
+        map = new String[N][M];
+        boolean check = false;
+
+        for(int i=0; i<N ; i++) {
+            map[i] = br.readLine().split(" ");
+            if(!check) {
+                for (int j = 0; j < M; j++) {
+                    if (map[i][j].equals("2")) {
+                        baseY = i;
+                        baseX = j;
+                        check = true;
                         break;
                     }
+                }
+            }
         }
-        
-        bfs(startX, startY);
-        
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) 
-                if (!isVisited[i][j] && map[i][j] == 1)
-                    builder.append(-1 + " ");
-                else 
-                    builder.append(distance[i][j] + " ");
-            builder.append("\n");
+
+        visit = new boolean[N][M];
+        distance = new int[N][M];
+
+        BFS();
+
+        for(int Y=0; Y<N; Y++) {
+            for(int X=0; X<M; X++) {
+                if(!visit[Y][X] && map[Y][X].equals("1")) bw.write("-1 ");
+                else bw.write(distance[Y][X] + " ");
+            }
+            bw.write("\n");
         }
-        
-        System.out.print(builder.toString());
+
+        bw.close();
     }
-    
-    private static void bfs(int x, int y) {
-        Queue<Point> queue = new LinkedList<>();
-        queue.add(new Point(x, y));
-        isVisited[x][y] = true;
-        
-        while (!queue.isEmpty()) {
-            Point current = queue.poll();
 
-            for (int i = 0; i < 4; i++) {
-                int nextX = current.x + DX[i];
-                int nextY = current.y + DY[i];
-                
-                if (nextX < 0 || nextY < 0 || nextX >= n || nextY >= m) continue;
-                if (map[nextX][nextY] == 0) continue;
-                if (isVisited[nextX][nextY]) continue;
+    private static void BFS() {
+        Deque<Node> dq = new ArrayDeque<>();
+        dq.add(new Node(baseY, baseX, 0));
+        visit[baseY][baseX] = true;
 
-                queue.add(new Point(nextX, nextY));
-                distance[nextX][nextY] = distance[current.x][current.y] + 1;
-                isVisited[nextX][nextY] = true;
+        while(!dq.isEmpty()) {
+            Node now = dq.poll();
+
+            for(int move=0 ; move<4 ; move++) {
+                int nextY = now.Y + ver[move];
+                int nextX = now.X + hor[move];
+                if(nextY<0 || N<=nextY || nextX<0 || M<=nextX) continue;
+
+                if(map[nextY][nextX].equals("0")) continue;
+
+                if(!visit[nextY][nextX]) {
+                    dq.add(new Node(nextY, nextX, now.Cnt+1));
+                    distance[nextY][nextX] = now.Cnt + 1;
+                    visit[nextY][nextX] = true;
+                }
             }
         }
     }
-}
 
-class Point {
-    public int x, y;
-    public Point(int x, int y) {
-        this.x = x;
-        this.y = y;
+    private static class Node {
+        private int Y;
+        private int X;
+        private int Cnt;
+        public Node(int y, int x, int cnt) {
+            Y = y;
+            X = x;
+            Cnt = cnt;
+        }
     }
 }
