@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 /**
- *
+ * https://www.acmicpc.net/problem/1238
  */
 public class no1238 {
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
