@@ -1,7 +1,5 @@
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.util.*;
 
 /**
  * https://www.acmicpc.net/problem/1238
@@ -13,6 +11,7 @@ public class no1238 {
     private static int max = 0;
     private static boolean[] visit;
     private static List<Node>[] map;
+    private static int[] memoryX, memoryN;
 
     public static void main(String[] args) throws IOException {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
@@ -48,23 +47,52 @@ public class no1238 {
          * 2번째 DFS : X에서 N로 도달하는 비용을 각 도착 노드에 맞게 모두 구함
          * 두 값을 합산해서 최대값을 출력
          */
-        for(Node start : map[X]) {
-            visit = new boolean[M + 1];
-            visit[start.Num] = true;
-            DFS(start.Num, start.Cost);
+        
+         // 1. X에서 출발하여, 각 노드에 도착할 때마다 기록(DP)
+        memoryX = new int[N+1];
+        DFS(X, 0);
+
+        // 2. 각 노드에서 출발해서 X에 도착할 떄마다 기록
+        memoryN = new int[N+1];
+        for(int goal = 1 ; goal<=N ; goal++) {
+            visit = new boolean[N+1];
+            visit[X] = true;
+            BFS(goal);
         }
 
         System.out.println(max);
     }
 
     private static void DFS(int departure, int sum) {
+        memoryX[departure] = sum;
         for (Node next : map[departure]) {
             if (!visit[next.Num]) {
                 visit[next.Num] = true;
                 DFS(next.Num, sum + next.Cost);
             }
         }
-        max = Math.max(max, sum);
+    }
+
+    private static void BFS(int goal) {
+        Deque<Node> dq = new ArrayDeque<>();
+        dq.add(new Node(X, 0));
+        
+        while(!dq.isEmpty()) {
+            Node now = dq.poll();
+        
+            if(now.Num==goal) {
+                memoryN[goal] = now.Cost;
+                break;
+            }
+            
+            /* 이 부분 작성하기 
+                map[now.Num]에 포함된 Node들을 돌면서, next.Num이 방문한 적이 없다면,
+                방문하기
+            */ 
+            for(Node next : map[now.Num]) {
+                
+            }
+        }
     }
 
     private static class Node {
