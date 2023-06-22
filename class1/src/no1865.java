@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Deque;
 import java.util.StringTokenizer;
 
@@ -7,8 +8,10 @@ public class no1865 {
     private static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     private static BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
     private static int T, Node, Edge, WH;
+    private static int INF = 987654321;
     private static StringTokenizer st, tempSt;
-    private static int[][] map;
+    private static int[] dist;
+    private static ArrayList<ArrayList<Move>> map;
     private static boolean[][] visited;
     public static void main(String[] args) throws IOException {
         T = Integer.parseInt(br.readLine());
@@ -26,8 +29,11 @@ public class no1865 {
         Node = Integer.parseInt(st.nextToken());
         Edge = Integer.parseInt(st.nextToken());
         WH = Integer.parseInt(st.nextToken());
+        dist = new int[Node+1];
 
-        map = new int[Node+1][Node+1];
+        map = new ArrayList<>();
+        for(int i = 0 ; i <= Node ; i++) map.add(new ArrayList<>());
+
         initialize();
 
         System.out.println("initializing");
@@ -44,8 +50,20 @@ public class no1865 {
             int departure = Integer.parseInt(tempSt.nextToken());
             int arrival = Integer.parseInt(tempSt.nextToken());
             int cost = Integer.parseInt(tempSt.nextToken());
-            map[departure][arrival] = map[arrival][departure] = cost;
+
+            if(i<Edge) {
+                map.get(departure).add(new Move(arrival, cost));
+                map.get(arrival). add(new Move(departure, cost));
+            }
+            else {
+                map.get(departure).add( new Move(arrival, cost));
+            }
         }
+
+        /**
+         * 여기부터
+         */
+
         for(int i = 0 ; i < WH ; i++) {
             tempSt = new StringTokenizer(br.readLine());
             int departure = Integer.parseInt(tempSt.nextToken());
