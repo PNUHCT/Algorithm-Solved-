@@ -1,3 +1,5 @@
+# StringTokenizer for Python
+
 class StringTokenizer:
     def __init__(self, string, delimiters):
         self.string = string
@@ -26,6 +28,7 @@ class StringTokenizer:
             return None
         return self.tokens[index]
 
+
 while 1 :
     delimiters = " "
     tokenizer = StringTokenizer(input(), delimiters)
@@ -36,8 +39,9 @@ while 1 :
     if int(tokenizer.get_token(1)) >17 or int(tokenizer.get_token(2)) >=80 : print(name + " Senior")
     else : print(name + " Junior")
 
-
-    # 단순 split()
+# -------------------------------------------------------------------------------------------------
+# 단순 split()
+# while 1 :
     # name, age, weight = input().split()
     # if '#' in name : break
 
