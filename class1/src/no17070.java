@@ -39,7 +39,7 @@ public class no17070 {
     private static int[] horLength = {0, 1};
 
     // 현재 상태가 대각선일 때
-    private static int[] verDiagobal = {0, 1, 1};
+    private static int[] verDiagonal = {0, 1, 1};
     private static int[] horDiagonal = {1, 0, 1};
 
     public static void main(String[] args) throws IOException {
@@ -66,13 +66,32 @@ public class no17070 {
             dq.add(new Node(1+verWidth[i], 2+horWidth[i], i)); // 가로 0 대각선 1
         }
 
-
         /**
          * 1. dq를 반복하며,
          * 2. 이전 상태가 가로일 때, 가로 조건으로 돌아
          * 3. 이전 상태가 세로일 때, 세로 조건으로 돌아
          * 4. 이전 상태가 대각선일 때, 대각선 조건으로 돌아
          */
+
+        while (!dq.isEmpty()) {
+            Node now = dq.poll();
+
+            // 가로
+            if(now.NodeType==0) {
+                for(int i=0 ; i<verWidth.length ; i++) {
+
+                }
+            }
+            // 대각선
+            else if(now.NodeType==1) {
+
+            }
+            // 세로
+            else {
+
+            }
+
+        }
     }
 
     private static class Node {
