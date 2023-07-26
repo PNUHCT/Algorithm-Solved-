@@ -79,7 +79,12 @@ public class no17070 {
             // 가로
             if(now.NodeType==0) {
                 for(int i=0 ; i<verWidth.length ; i++) {
+                    if(i==0) {
 
+                    }
+                    else {
+                        if(field[now.Y][now.X+1] && field[now.Y+1][now.X] && field[now.Y+1][now.X+1]) dq.add(new Node(now.Y+1, now.X+1, 1));
+                    }
                 }
             }
             // 대각선
