@@ -13,7 +13,6 @@ public class no1837 {
      * 1. 둘다 K보다 크면 'GOOD'
      * 2. 둘중 하나라도 K보다 작으면 'BAD'와 '둘중_더_작은_소수'를 출력
      */
-
     // BigInteger 방법 2번째 : 성공
     private static BigInteger ORG, K, NUM;
     public static void main(String[] args) throws IOException {
