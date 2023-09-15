@@ -19,7 +19,7 @@ public class no1837 {
         StringTokenizer st = new StringTokenizer(br.readLine(), " ");
         ORG = new BigInteger(st.nextToken());
         K = new BigInteger(st.nextToken());
-        NUM = new BigInteger("2");
+        NUM = new BigInteger("1");
 
         while (true) {
             if( NUM.compareTo(K) == 1 || NUM.compareTo(K) == 0 ) {
